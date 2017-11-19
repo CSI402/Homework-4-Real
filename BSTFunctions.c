@@ -1,4 +1,11 @@
-//Functions for the Binary Search Tree
+
+/*
+Daniel Hug dhug@albany.edu: Monitor
+Alana Ruth Aruth@albany.edu : Recorder
+Jessica Kanczura jKanczura@albany.edu : Leader
+
+Functions for the Binary Search Tree
+*/
 
 #include "BSTStruct.h"
 #include "BSTPrototypes.h"
