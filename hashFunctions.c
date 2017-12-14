@@ -2,7 +2,6 @@
 Daniel Hug dhug@albany.edu: Monitor
 Alana Ruth Aruth@albany.edu : Recorder
 Jessica Kanczura jKanczura@albany.edu : Leader
-
 Functions for the Hash Table
 */
 
@@ -13,6 +12,7 @@ Functions for the Hash Table
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 //Function to make a hash table for the given program file, returns the hash table
 phTable fileToHash(char *fileName, int tableSize, pnode root){
@@ -27,10 +27,17 @@ phTable fileToHash(char *fileName, int tableSize, pnode root){
 
   //Delcare local variables
   char line[100]; //Each line of the file
+  char line2[100];
   char symbol[11]; //Each symbol
+  char var[10];
+  char var2[10];
   char instruction[6]; //Each instruction
   char *token; //For strtok function
+  char *token2;
   unsigned int lc = 0; //Each lc value (beginning at 0)
+  char *ptr;
+  int count = 0;
+  FILE *temp;
 
   //Create an empty hash table of the given size
   phTable table = createHashTable(tableSize);
@@ -39,12 +46,13 @@ phTable fileToHash(char *fileName, int tableSize, pnode root){
   while(fgets(line, sizeof(line), fp) != NULL){
 
     //If a line has a symbol in the label field
-   if(line[0] != '\t' && line[0] != ' '){
+    if(line[0] != '\t' && line[0] != ' '){
       //Get first token
       token = strtok(line, " ");
       //Initialize symbol
       strcpy(symbol, token);
       symbol[11] = '\0';
+
 
       //Get the next token (the instruction)
       token = strtok(NULL, " ");
@@ -52,10 +60,45 @@ phTable fileToHash(char *fileName, int tableSize, pnode root){
       strcpy(instruction, token);
       instruction[6] = '\0';
 
-      //Increment LC value by the directive (if search doesn't equal null)
-      if(search(root, instruction) != NULL)
-        lc += search(root, instruction)->opFormat;
+      //Get start LC from first line
 
+      if (strcmp(symbol, "start") == 0){
+        token = strtok(NULL, " ");
+        strcpy(var, token);
+        var[10] = '\0';
+        //if value is digit
+        if (isdigit(token[0])){
+          lc = strtol(token, &ptr, 10);
+          count = lc;
+        }
+        //if value is variable
+        else{
+          strtok(var, "\n");
+          if((temp = fopen(fileName, "r")) == NULL){
+            fprintf(stderr, "File could not be opened.\n");
+            exit(1); }
+          while(fgets(line2, sizeof(line2), temp) != NULL){
+            if (line2[0] != '\t' && line2[0] != ' '){
+              token2 = strtok(line2, " ");
+              strcpy(var2, token2);
+              var2[10] = '\0';
+
+              if (strcmp(var, var2) == 0){
+                token2 = strtok(NULL, " ");
+                token2 = strtok(NULL, " ");
+                fclose(temp);
+                break;
+              }
+            }
+          }
+          lc = strtol(token2, &ptr, 10);
+          count = lc;
+        }
+      }
+
+      //count has incremented every line since
+      //being given the starting LC value
+      lc = count;
       //Insert the hash node into the hash table and set the table
       table = insertHashNode(table, symbol, lc, tableSize);
     }
@@ -71,6 +114,7 @@ phTable fileToHash(char *fileName, int tableSize, pnode root){
       if(search(root, instruction) != NULL)
         lc += search(root, instruction)->opFormat;
     }
+    count++;;
   }
 
   //Close the file
@@ -298,3 +342,4 @@ void printHashTable(phTable table, int tableSize){
     }
   }
 }
+
