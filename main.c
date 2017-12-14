@@ -8,8 +8,10 @@ Main worker function
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "BSTStruct.h"
+#include "BSTStructs.h"
 #include "BSTPrototypes.h"
+#include "hashStructs.h"
+#include "hashPrototypes.h"
 
 int main(int argc, char *argv[]){
 
@@ -22,7 +24,16 @@ int main(int argc, char *argv[]){
   //Convert the instruction set opcode file to a binary search tree
   pnode root = fileToBST(argv[1]);
   //Print an inorder traversal of the BST
+  printf("\nIn order traversal of BST:\n");
   printTree(root);
+  //Print the height of the BST
+  printf("\nHeight of the BST: %d\n", getBSTHeight(root));
+
+  //Convert the program file to a hash table
+  phTable table = fileToHash(argv[2], atoi(argv[3]), root);
+  //Print the hash table
+  printf("\nHash table:\n");
+  printHashTable(table, atoi(argv[3]));
 
   return 0;
 }
