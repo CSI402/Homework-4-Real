@@ -1,4 +1,3 @@
-
 /*
 Daniel Hug dhug@albany.edu: Monitor
 Alana Ruth Aruth@albany.edu : Recorder
@@ -15,3 +14,4 @@ typedef struct BSTNode {
   struct BSTNode* leftNode;
   struct BSTNode* rightNode;
 } node, *pnode;
+
