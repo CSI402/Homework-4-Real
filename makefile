@@ -1,6 +1,6 @@
 CC =gcc
 CFLAGS =-Wall
-OBJECTS =  main.c BSTFunctions.c
+OBJECTS =  main.c BSTFunctions.c hashFunctions.c
 
 firstpass: $(OBJECTS)
         $(CC) $(CFLAGS) $(OBJECTS) -o firstpass
