@@ -1,4 +1,3 @@
-
 /*
 Daniel Hug dhug@albany.edu: Monitor
 Alana Ruth Aruth@albany.edu : Recorder
@@ -13,7 +12,5 @@ pnode insertNode(pnode root, char instruction[6], unsigned int opcode, unsigned 
 pnode search(pnode root, char instruction[6]);
 void printTree(pnode root);
 void freeTree(pnode root);
-
-
-
+int getBSTHeight(pnode root);
 
